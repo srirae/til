@@ -132,28 +132,4 @@ The bitrate follows directly from the codebook setup:
 bitrate = frames per second x number of codebooks x bits per index
 
 For example, with 75 frames per second, 8 codebooks, and 1024 entries per codebook (10 bits each): 75 x 8 x 10 = 6,000 bits per second, or 6 kbps. Using fewer codebooks at inference time gives a lower bitrate and lower quality, which is how many codecs support multiple bitrates from a single model.
-
-## How the Codec Is Trained
-
-The whole system (encoder, quantizer, decoder) is trained end to end, usually with these losses:
-
-- **Reconstruction loss:** Compares the output waveform or spectrogram to the original.
-- **Adversarial loss:** A discriminator network tries to tell real audio from reconstructed audio, which pushes the decoder toward realistic sound.
-- **Quantization / commitment loss:** Keeps the encoder outputs close to the codebook entries so the quantizer stays stable.
-
-```mermaid
-flowchart LR
-    A[Original audio] --> B[Encoder]
-    B --> C[RVQ]
-    C --> D[Decoder]
-    D --> E[Reconstructed audio]
-    A --> F[Compare: reconstruction loss]
-    E --> F
-    E --> G[Discriminator: adversarial loss]
-    A --> G
-    B --> H[Commitment loss]
-    C --> H
-    F --> I[Update weights]
-    G --> I
-    H --> I
-```
+I
